@@ -1,26 +1,34 @@
 "use strict";
+
 const { Model } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   class ticket extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
-      this.belongsTo(models.user, { foreignkey: "userID" });
-      this.belongsTo(models.event, { foreignkey: "eventID" });
-      this.belongsTo(models.seat, { foreignkey: "seatID" });
+      // Satu ticket dimiliki oleh satu user
+      this.belongsTo(models.user, {
+        foreignKey: "userID",
+      });
+
+      // Satu ticket dimiliki oleh satu event
+      this.belongsTo(models.event, {
+        foreignKey: "eventID",
+      });
+
+      // Satu ticket dimiliki oleh satu seat
+      this.belongsTo(models.seat, {
+        foreignKey: "seatID",
+      });
     }
   }
+
   ticket.init(
     {
       ticketID: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
       },
       eventID: DataTypes.INTEGER,
       userID: DataTypes.INTEGER,
@@ -32,5 +40,6 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "ticket",
     }
   );
+
   return ticket;
 };

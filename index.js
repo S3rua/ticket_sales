@@ -1,13 +1,29 @@
-const express = require("express") // memanggil library express js
-const bodyParser = require("body-parser") // memanggil library body-parser
-const cors = require("cors") // memanggil library cors
-const app = express() //implementasi express
+/** load library express */
+const express = require(`express`)
 
-// penggunaan body-parser untuk ekstrak data request berformat JSON
-app.use(bodyParser.json())
+/** create object that instances of express */
+const app = express()
 
-// penggunaan body-parser untuk ekstrak data request dari body
-app.use(bodyParser.urlencoded({extended: true}))
+/** define port of server */
+const PORT = 8000
 
-// penggunaan cors agar end point dapat diakses oleh cross platform
+/** load library cors */
+const cors = require(`cors`)
+
+/** open CORS policy */
 app.use(cors())
+
+/** define all routes */
+const userRoute = require(`./routes/user.route`)
+
+/** define prefix for each route */
+app.use(`/user`, userRoute)
+
+/** run server based on defined port */
+app.listen(PORT, () => {
+    console.log(`Server of Ticket Sales runs on port ${PORT}`)
+})
+const diskonRoute = require("./routes/diskon.route");
+
+app.use("/diskon", diskonRoute);
+app.use("/user", userRoute);

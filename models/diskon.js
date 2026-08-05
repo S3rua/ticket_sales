@@ -1,8 +1,6 @@
 'use strict';
 
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class diskon extends Model {
@@ -12,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   diskon.init({
-    id: {
+    id_diskon: {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,

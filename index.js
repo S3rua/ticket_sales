@@ -1,29 +1,18 @@
-/** load library express */
-const express = require(`express`)
-
-/** create object that instances of express */
+const express = require("express")
 const app = express()
 
-/** define port of server */
-const PORT = 8000
-
-/** load library cors */
-const cors = require(`cors`)
-
-/** open CORS policy */
+const cors = require("cors")
 app.use(cors())
 
-/** define all routes */
-const userRoute = require(`./routes/user.route`)
+app.use(express.json())      // WAJIB
+app.use(express.urlencoded({ extended: true })) // optional tapi bagus
 
-/** define prefix for each route */
-app.use(`/user`, userRoute)
+const userRoute = require("./routes/user.route")
+const diskonRoute = require("./routes/diskon.route")
 
-/** run server based on defined port */
-app.listen(PORT, () => {
-    console.log(`Server of Ticket Sales runs on port ${PORT}`)
+app.use("/user", userRoute)
+app.use("/diskon", diskonRoute)
+
+app.listen(8000, () => {
+    console.log("Server jalan")
 })
-const diskonRoute = require("./routes/diskon.route");
-
-app.use("/diskon", diskonRoute);
-app.use("/user", userRoute);

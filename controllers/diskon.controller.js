@@ -1,4 +1,4 @@
-const diskonModel = require("../models/diskon");
+const diskonModel = require("../models").diskon;
 
 // GET semua data
 exports.getAllDiskon = async (request, response) => {

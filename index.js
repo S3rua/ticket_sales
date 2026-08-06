@@ -9,7 +9,9 @@ app.use(express.urlencoded({ extended: true })) // optional tapi bagus
 
 const userRoute = require("./routes/user.route")
 const diskonRoute = require("./routes/diskon.route")
+const eventRoute = require("./routes/event.route");
 
+app.use("/event", eventRoute);
 app.use("/user", userRoute)
 app.use("/diskon", diskonRoute)
 

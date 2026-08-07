@@ -4,17 +4,21 @@ const app = express()
 const cors = require("cors")
 app.use(cors())
 
-app.use(express.json())      // WAJIB
-app.use(express.urlencoded({ extended: true })) // optional tapi bagus
+app.use(express.json())
+app.use(express.urlencoded({extended:true}))
 
 const userRoute = require("./routes/user.route")
 const diskonRoute = require("./routes/diskon.route")
-const eventRoute = require("./routes/event.route");
+const eventRoute = require("./routes/event.route")
+const seatRoute = require("./routes/seat.route")
+const ticketRoute = require("./routes/ticket.route")
 
-app.use("/event", eventRoute);
 app.use("/user", userRoute)
 app.use("/diskon", diskonRoute)
+app.use("/event", eventRoute)
+app.use("/seat", seatRoute)
+app.use("/ticket", ticketRoute)
 
-app.listen(8000, () => {
+app.listen(8000,()=>{
     console.log("Server jalan")
 })

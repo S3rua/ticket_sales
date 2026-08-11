@@ -20,21 +20,13 @@ exports.getAllTicket = async (req,res)=>{
 }
 exports.findTicket = async(req,res)=>{
 
-    let keyword=req.params.key
+    let id=req.params.id
 
     let ticket=await ticketModel.findAll({
 
         where:{
-            [Op.or]:[
-                {
-                    bookedDate:{
-                        [Op.substring]:keyword
-                    }
-                }
-            ]
-        }
-
-    })
+             ticketID: id}})
+               
 
     return res.json({
         success:true,

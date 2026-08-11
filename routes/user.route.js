@@ -14,11 +14,13 @@ app.get("/", userController.getAllUser)
 app.get("/:key", userController.findUser)
 /** create route to add new user using method "POST" */
 app.post("/", userController.addUser)
-/** create route to update user 
- * using method "PUT" and define parameter for "id" */
+/** create route to update user */
+ app.put("/reset/:id", userController.resetPassword)
+ /* using method "PUT" and define parameter for "id" */
 app.put("/:id", userController.updateUser)
 /** create route to delete user 
  * using method "DELETE" and define parameter for "id" */
 app.delete("/:id", userController.deleteUser)
+
 /** export app in order to load in another file */
 module.exports = app

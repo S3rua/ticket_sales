@@ -1,106 +1,89 @@
-const ticketModel = require("../models").ticket;
-const Op = require("sequelize").Op;
+/** load model */
+const seatModel = require(`../models/index`).seat
+const userModel = require(`../models/index`).user
+const eventModel = require(`../models/index`).event
+const ticketModel = require(`../models/index`).ticket
 
-exports.getAllTicket = async (req,res)=>{
-    try{
-        const seat = await ticketModel.findAll()
+/** load Operation from  Sequelize  */
+const Op = require("sequelize").Op
 
-        return res.json({
-            success:true,
-            data:seat,
-            message:"All ticket loaded"
+/** create function for add new ticket */
+exports.addTicket = async (request, response) => {
+    /** prepare date for bookedDate */
+    const today = new Date()
+    const bookedDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()} ${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`
+
+    /** prepare data from request */
+    const { eventID, userID, seats } = request.body;
+
+    try {
+        // Create seat records for the chosen seats
+        const seatIDs = await Promise.all(seats.map(async seat => {
+          const { rowNum, seatNum } = seat;
+          const createdSeat = await seatModel.create({
+            eventID,
+            rowNum,
+            seatNum,
+            status: 'true'
+          });
+          return createdSeat.seatID;
+        }));
+    
+        // Create ticket records associating the chosen seats
+        const tickets = await ticketModel.bulkCreate(seatIDs.map(seatID => ({
+          eventID,
+          userID,
+          seatID,
+          bookedDate
+        })));
+    
+        response.status(201).json(tickets);
+      } catch (error) {
+        return response.json({
+            success: false,
+            message: error.message
         })
-
-    }catch(err){
-        return res.json({
-            success:false,
-            message:err.message
-        })
-    }
+      }
 }
-exports.findTicket = async(req,res)=>{
-
-    let id=req.params.id
-
-    let ticket=await ticketModel.findAll({
-
-        where:{
-             ticketID: id}})
-               
-
-    return res.json({
-        success:true,
-        data:ticket
-    })
-
-}
-exports.addTicket=async(req,res)=>{
-
-    let newTicket={
-
-        eventID:req.body.eventID,
-        userID:req.body.userID,
-        seatID:req.body.seatID,
-        bookedDate:req.body.bookedDate
-
-    }
-
-    await ticketModel.create(newTicket)
-
-    return res.json({
-
-        success:true,
-        message:"Ticket berhasil ditambah"
-
-    })
-
-}
-exports.updateTicket=async(req,res)=>{
-
-    let id=req.params.id
-
-    let data={
-
-        eventID:req.body.eventID,
-        userID:req.body.userID,
-        seatID:req.body.seatID,
-        bookedDate:req.body.bookedDate
-
-    }
-
-    await ticketModel.update(data,{
-
-        where:{
-            ticketID:id
+/** create function for read all data */
+exports.getAllTicket = async (request, response) => {
+    /** call findAll() to get all data */
+    let tickets = await ticketModel.findAll(
+        {
+            include: [
+                { model: eventModel, attributes: ['eventName','eventDate','venue']},
+                { model: userModel, attributes: ['firstName', 'lastName']},
+                { model: seatModel, attributes: ['rowNum', 'seatNum']},
+            ]
         }
-
+    )
+    return response.json({
+        success: true,
+        data: tickets,
+        message: `All tickets have been loaded`
     })
-
-    return res.json({
-
-        success:true,
-        message:"Update berhasil"
-
-    })
-
 }
-exports.deleteTicket=async(req,res)=>{
 
-    let id=req.params.id
+/** create function for filter ticket by ID */
+exports.ticketByID = async (request, response) => {
+    /** define ticketID to find data */
+    let ticketID = request.params.id
 
-    await ticketModel.destroy({
-
-        where:{
-            ticketID:id
-        }
-
+    /** call findAll() within where clause and operation 
+     * to find data based on ticketID  */
+    let tickets = await ticketModel.findAll({
+        where: {
+            ticketID: { [Op.substring]: ticketID } 
+        },
+        include: [
+            { model: eventModel, attributes: ['eventName','eventDate','venue']},
+            { model: userModel, attributes: ['firstName', 'lastName','email']},
+            { model: seatModel, attributes: ['rowNum', 'seatNum']},
+        ]
     })
-
-    return res.json({
-
-        success:true,
-        message:"Delete berhasil"
-
+    return response.json({
+        success: true,
+        data: tickets,
+        message: `All tickets have been loaded`
     })
-
 }

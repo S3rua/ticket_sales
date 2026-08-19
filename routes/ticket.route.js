@@ -9,4 +9,7 @@ const ticketController = require("../controllers/ticket.controller")
 app.get("/", ticketController.getAllTicket)
 app.get("/:id", ticketController.ticketByID)
 
+// CREATE
+app.post("/", ticketController.addTicket)
+
 module.exports = app

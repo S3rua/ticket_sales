@@ -39,3 +39,54 @@ exports.addDiskon = async (request, response) => {
         });
     }
 };
+
+// PUT update data
+exports.updateDiskon = async (request, response) => {
+    try {
+        let id = request.params.id;
+
+        let data = {
+            nama_diskon: request.body.nama_diskon,
+            nominal_diskon: request.body.nominal_diskon
+        };
+
+        await diskonModel.update(data, {
+            where: {
+                id_diskon: id
+            }
+        });
+
+        return response.json({
+            success: true,
+            message: "Discount has been updated"
+        });
+    } catch (error) {
+        return response.json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
+// DELETE data
+exports.deleteDiskon = async (request, response) => {
+    try {
+        let id = request.params.id;
+
+        await diskonModel.destroy({
+            where: {
+                id_diskon: id
+            }
+        });
+
+        return response.json({
+            success: true,
+            message: "Discount has been deleted"
+        });
+    } catch (error) {
+        return response.json({
+            success: false,
+            message: error.message
+        });
+    }
+};

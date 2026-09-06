@@ -20,11 +20,12 @@ const authenticate = async (request, response) => {
         * payload is must be string.
         * dataUser is object, so we must convert to string.
         */
-        let payload = JSON.stringify(dataUser)
-        console.log(payload)
+        let payload = {
+    userID: dataUser.userID,
+    role: dataUser.role
+}
 
-        /** generate token */
-        let token = jwt.sign(payload, secret)
+let token = jwt.sign(payload, secret)
 
         /** define response */
         return response.json({

@@ -15,7 +15,7 @@ exports.addTicket = async (request, response) => {
 
    // buat biar langsung idnya kedetect
 const { eventID, seats } = request.body;
-const userID = request.user.id;
+const userID = request.user.userID;
 
     try {
         // Create seat records for the chosen seats

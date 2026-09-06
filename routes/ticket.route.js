@@ -4,12 +4,12 @@ app.use(express.json())
 
 
 const ticketController = require("../controllers/ticket.controller")
+const { authorize } = require("../controllers/auth.controller")
+const { validateTicket } = require("../middlewares/ticket-validation")
 
-// READ
-app.get("/", ticketController.getAllTicket)
-app.get("/:id", ticketController.ticketByID)
 
-// CREATE
-app.post("/", ticketController.addTicket)
+app.get("/", authorize, ticketController.getAllTicket)
+app.get("/:id", authorize, ticketController.ticketByID)
+app.post("/", authorize, validateTicket, ticketController.addTicket)
 
 module.exports = app

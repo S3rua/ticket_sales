@@ -1,9 +1,10 @@
 /** load Express Validator and Multer Library */
 const { validationResult, body } = require(`express-validator`);
 
-const validateSeat = [
+const validateTicket = [
     // Validation checks for the request body
     body('eventID').notEmpty().withMessage('eventID is required'),
+    body('seats').notEmpty().withMessage('seats is required'),
     body('rownum').notEmpty().withMessage('rownum  is required'),
     body('seatnum').notempty().withMessage('seatnum is required'),
 
@@ -25,4 +26,4 @@ const validateSeat = [
     }
 ];
 
-module.exports = { validateSeat }
+module.exports = { validateTicket }

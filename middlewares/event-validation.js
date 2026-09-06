@@ -4,10 +4,10 @@ const { validationResult, body } = require(`express-validator`);
 const validateEvent = [
     // Validation checks for the request body
     body('eventName').notEmpty().withMessage('event name is required'),
-    body('eventDate').notEmpty().withMessage('event  is required'),
-    body('venue').isEmail().withMessage('venue is required'),
+    body('eventDate').notEmpty().withMessage('event date  is required'),
+    body('venue').notempty().withMessage('venue is required'),
     body('price').notEmpty().withMessage('price is required'),
-    body('image').notEmpty().withMessage('Password is required'),
+    body('image').notEmpty().withMessage('image is required'),
   
     // Custom validation logic
     (request, response, next) => {

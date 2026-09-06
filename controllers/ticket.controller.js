@@ -13,8 +13,9 @@ exports.addTicket = async (request, response) => {
     const today = new Date()
     const bookedDate = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()} ${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`
 
-    /** prepare data from request */
-    const { eventID, userID, seats } = request.body;
+   // buat biar langsung idnya kedetect
+const { eventID, seats } = request.body;
+const userID = request.user.id;
 
     try {
         // Create seat records for the chosen seats

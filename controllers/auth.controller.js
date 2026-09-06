@@ -1,10 +1,6 @@
-/** load md5 library */
 const md5 = require(`md5`)
-/** load library jsonwebtoken */
 const jwt = require(`jsonwebtoken`)
-/** load model of user */
 const userModel = require(`../models/index`).user
-/** define secret key as signature */
 const secret = `mokleters`
 
 

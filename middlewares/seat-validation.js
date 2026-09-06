@@ -5,7 +5,7 @@ const validateSeat = [
     // Validation checks for the request body
     body('eventID').notEmpty().withMessage('eventID is required'),
     body('rownum').notEmpty().withMessage('rownum  is required'),
-    body('seatnum').notempty().withMessage('seatnum is required'),
+    body('seatnum').notEmpty().withMessage('seatnum is required'),
 
   
     // Custom validation logic

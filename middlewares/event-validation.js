@@ -6,7 +6,7 @@ const validateEvent = [
     body('eventName').notEmpty().withMessage('event name is required'),
     body('eventDate').notEmpty().withMessage('event date  is required'),
     body('venue').notEmpty().withMessage('venue is required'),
-    body('price').notEmpty().withMessage('price is required'),
+    body('price').notEmpty().withMessage('pricee is required'),
     body('image').notEmpty().withMessage('image is required'),
   
     // Custom validation logic

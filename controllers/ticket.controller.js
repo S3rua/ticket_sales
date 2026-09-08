@@ -48,43 +48,53 @@ const userID = request.user.userID;
 }
 /** create function for read all data */
 exports.getAllTicket = async (request, response) => {
-    /** call findAll() to get all data */
-    let tickets = await ticketModel.findAll(
-        {
-            include: [
-                { model: eventModel, attributes: ['eventName','eventDate','venue']},
-                { model: userModel, attributes: ['firstName', 'lastName']},
-                { model: seatModel, attributes: ['rowNum', 'seatNum']},
-            ]
-        }
-    )
+
+    let whereCondition = {}
+
+    if (request.user.role !== "admin") {
+        whereCondition.userID = request.user.userID
+    }
+
+    let tickets = await ticketModel.findAll({
+        where: whereCondition,
+        include: [
+            { model: eventModel, attributes: ['eventName','eventDate','venue']},
+            { model: userModel, attributes: ['firstName', 'lastName']},
+            { model: seatModel, attributes: ['rowNum', 'seatNum']},
+        ]
+    })
+
     return response.json({
         success: true,
         data: tickets,
-        message: `All tickets have been loaded`
+        message: `Tickets have been loaded`
     })
 }
-
 /** create function for filter ticket by ID */
 exports.ticketByID = async (request, response) => {
-    /** define ticketID to find data */
+
     let ticketID = request.params.id
 
-    /** call findAll() within where clause and operation 
-     * to find data based on ticketID  */
+    let whereCondition = {
+        ticketID: { [Op.substring]: ticketID }
+    }
+
+    if (request.user.role !== "admin") {
+        whereCondition.userID = request.user.userID
+    }
+
     let tickets = await ticketModel.findAll({
-        where: {
-            ticketID: { [Op.substring]: ticketID } 
-        },
+        where: whereCondition,
         include: [
             { model: eventModel, attributes: ['eventName','eventDate','venue']},
             { model: userModel, attributes: ['firstName', 'lastName','email']},
             { model: seatModel, attributes: ['rowNum', 'seatNum']},
         ]
     })
+
     return response.json({
         success: true,
         data: tickets,
-        message: `All tickets have been loaded`
+        message: `Tickets have been loaded`
     })
 }

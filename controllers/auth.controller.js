@@ -47,38 +47,31 @@ let token = jwt.sign(payload, secret)
 
 /** create function authroize */
 const authorize = (request, response, next) => {
-    /** get "Authorization" value from request's header */
     const authHeader = request.headers.authorization;
 
-    /** check nullable header */
     if (authHeader) {
-        /** when using Bearer Token for authorization,
-        * we have to split `headers` to get token key.
-        * valus of headers = `Bearers tokenKey`
-        */
         const token = authHeader.split(' ')[1];
 
-        /** verify token using jwt */
-        let verifiedUser = jwt.verify(token, secret);
-        if (!verifiedUser)
-        {
-            return response.json({
+        try {
+            let verifiedUser = jwt.verify(token, secret);
+
+            request.user = verifiedUser;
+            next();
+
+        } catch (error) {
+            return response.status(401).json({
                 success: false,
                 auth: false,
                 message: `User Unauthorized`
-            })
+            });
         }
-        
-        request.user = verifiedUser; // payload
 
-        /** if there is no problem, go on to controller */
-        next();
     } else {
-        return response.json({
+        return response.status(401).json({
             success: false,
             auth: false,
             message: `User Unauthorized`
-        })
+        });
     }
 }
 
@@ -86,3 +79,4 @@ const authorize = (request, response, next) => {
 module.exports = { authenticate, authorize }
 
 
+    

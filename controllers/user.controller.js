@@ -6,14 +6,26 @@ const md5 = require(`md5`);
 const Op = require(`sequelize`).Op;
 /** create function for read all data */
 exports.getAllUser = async (request, response) => {
-  /** call findAll() to get all data */
-  let users = await userModel.findAll();
-  return response.json({
-    success: true,
-    data: users,
-    message: `All users have been loaded`,
-  });
-};
+
+    let users;
+
+    if (request.user.role === "admin") {
+        // Admin bisa melihat semua user
+        users = await userModel.findAll();
+    } else {
+        // User biasa hanya melihat dirinya sendiri
+        users = await userModel.findOne({
+            where: {
+                userID: request.user.userID
+            }
+        });
+    }
+
+    return response.json({
+        success: true,
+        data: users
+    });
+}
 /** create function for filter */
 exports.findUser = async (request, response) => {
   /** define keyword to find data */

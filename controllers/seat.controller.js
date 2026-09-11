@@ -3,8 +3,10 @@ const Op = require("sequelize").Op
 
 exports.getAllSeat = async (req,res)=>{
     try{
-        const seat = await seatModel.findAll()
+       
 
+        const seat = await seatModel.findAll()
+    
         return res.json({
             success:true,
             data:seat,

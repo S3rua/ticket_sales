@@ -82,38 +82,45 @@ exports.addUser = (request, response) => {
 };
 /** create function for update user */
 exports.updateUser = (request, response) => {
-  /** prepare data that has been changed */
+
   let dataUser = {
     firstname: request.body.firstname,
     lastname: request.body.lastname,
     email: request.body.email,
     role: request.body.role,
   };
+
   if (request.body.password) {
     dataUser.password = md5(request.body.password);
   }
-  /** define id user that will be update */
-  let userID = request.params.id;
 
-  /** execute update data based on defined id user */
+  let userID;
+
+  if (request.user.role === "admin") {
+    userID = request.params.id;
+  } else {
+    userID = request.user.userID;
+  }
+
   userModel
-    .update(dataUser, { where: { userID: userID } })
+    .update(dataUser, {
+      where: {
+        userID: userID
+      }
+    })
     .then((result) => {
-      /** if update's process success */
       return response.json({
         success: true,
         message: `Data user has been updated`,
       });
     })
     .catch((error) => {
-      /** if update's process fail */
       return response.json({
         success: false,
         message: error.message,
       });
     });
 };
-/** create function for delete data  */
 exports.deleteUser = (request, response) => {
   /** define id user that will be update */
   let userID = request.params.id;

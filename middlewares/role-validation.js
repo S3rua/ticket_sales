@@ -23,3 +23,13 @@ exports.IsAdmin = async (request, response, next) => {
         })
     }
   }
+  exports.IsUserOrAdmin = (request, response, next) => {
+  if (request.user.role === "user" || request.user.role === "admin") {
+    next();
+  } else {
+    return response.status(403).json({
+      success: false,
+      message: "Access denied"
+    });
+  }
+};

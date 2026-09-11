@@ -2,7 +2,7 @@
 const express = require(`express`);
 const app = express();
 const { authorize } = require('../controllers/auth.controller')
-const {IsUser, IsAdmin} = require('../middlewares/role-validation')
+const {IsUser, IsAdmin, IsUserOrAdmin} = require('../middlewares/role-validation')
 
 app.use(express.json());
 
@@ -14,7 +14,7 @@ const { validateUser } = require("../middlewares/user-validation")
 app.get("/", authorize, userController.getAllUser)
 app.get("/:key", authorize, IsAdmin, userController.findUser)
 app.post("/", authorize, IsAdmin, validateUser, userController.addUser)
-app.put("/:id", authorize, IsUser, validateUser, userController.updateUser)
+app.put("/:id", authorize,IsUserOrAdmin, validateUser, userController.updateUser)
 app.delete("/:id", authorize, IsAdmin, userController.deleteUser)
 
 

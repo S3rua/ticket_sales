@@ -8,9 +8,9 @@ const { validateEvent } = require('../middlewares/event-validation');
 app.use(express.json());
 
 
-app.get("/", authorize, IsUser,eventController.getAllEvent);
-app.get("/:key",authorize, IsUser, eventController.findEvent);
-app.post("/",authorize,IsAdmin,validateEvent, eventController.addEvent);
+app.get("/", authorize, eventController.getAllEvent);
+app.get("/:key",authorize,  eventController.findEvent);
+app.post("/",authorize,IsAdmin, eventController.addEvent);
 app.put("/:id", authorize, IsAdmin, validateEvent,eventController.updateEvent);
 app.delete("/:id", authorize, IsAdmin, eventController.deleteEvent);
 

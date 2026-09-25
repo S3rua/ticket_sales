@@ -7,6 +7,7 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
+const ongkirRoute = require("./routes/ongkir.route")
 const userRoute = require("./routes/user.route")
 const diskonRoute = require("./routes/diskon.route")
 const eventRoute = require("./routes/event.route")
@@ -14,7 +15,7 @@ const seatRoute = require("./routes/seat.route")
 const ticketRoute = require("./routes/ticket.route")
 const auth = require(`./routes/auth.route`)
 
-
+app.use("/ongkir", ongkirRoute)
 app.use("/user", userRoute)
 app.use("/diskon", diskonRoute)
 app.use("/event", eventRoute)
